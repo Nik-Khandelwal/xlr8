@@ -1,4 +1,4 @@
-# xlr8 - SIH '20
+# xlr8
 
 #### Team: Ajinkya Vyas, Ayush Yembarwar, Disha Jain, Divya Padte, Nikhil Khandelwal, Satyavrat Sharma
 #### Team Snowball
@@ -6,7 +6,7 @@
 
 ##### Demo Link: [Python Anywhere](https://xlr8.pythonanywhere.com)
 
-Team Snowball's idea submission for the Smart India Hackathon 2020.
+Team Snowball's idea submission for the Mercedes-Benz Digital Challenge, India.
 
 ## Project Description
 
