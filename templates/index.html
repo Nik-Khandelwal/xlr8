@@ -3,114 +3,84 @@
 <head>
     {% load staticfiles %}
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <title>XLR8 | Maps</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/css/materialize.min.css">
     <script type="text/javascript" src="{% static 'jquery-1.11.1.min.js' %}"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
-
+    <style>
+    .row{margin-bottom: 0.761vh;}
+    </style>
      <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
    crossorigin=""></script>
-
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <script type="text/javascript" src="{% static 'main.js' %}"></script>
-
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-
-
-
+    <script type="text/javascript" src="{% static 'index.js' %}"></script>
 </head>
-<body>
+<body style="border: 1vh solid black; display: flex; flex-direction: row;">
+    <div id="MapLocation" style="width: 68vw; height: 98vh; border-right: 0.7vw solid black;">
 
+    </div>
 
-<!------ Include the above in your HEAD tag ---------->
-
-<div class="row">
-  <div class="column col-lg-8 left" style="background-color:#fbe8c5;">
-            <div id="MapLocation"></div>
-  </div>
-  <div class="column col-lg-4 right" style="background-color:#fbe8c5;">
-      <div class="header" style="background-color:#fbe8c5;">
-    <img src="{% static 'xlr8.png' %}" alt="xlr8" style="width:23vh;height:15vh;" class="center">
-</div>
-      <br><hr><br>
-         <div class="container">
-            <div class="row ml-0">
-              <input type="hidden" name="count" value="1" />
-                  <div class="control-group" id="fields">
-                      <div class="controls" id="profs">
-{#                          <form class="input-append" action="/dat_inp/" method="post" id="post-form">#}
-                          <form method="POST" id="post-form">
-                              {% csrf_token %}
-                              <div id="field1">
-                                <input autocomplete="off" class="input" id="src1" name="src1" type="number" placeholder="Source" data-items="8"/>
-                                <input autocomplete="off" class="input" id="dest1" name="dest1" type="number" placeholder="Destination" data-items="8"/>
-                                </div>
-
-                                <button id="b1" class="btn add-more" type="button">+</button>
-                                                      <br>
-                      <small>Press + to add another Car :)</small>
-                               <br>
-                               <br>
-                               <button type="submit" class="btn btn-primary">Submit</button>
-                          </form>
-
+    <div id="Loader" class="preloader-wrapper big" style="position: absolute; z-index: 10000; left: 32vw; top: 48vh;">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+    </div>
+   
+    <div id="Side" style="display: flex; flex-direction: column; height: 98vh; width: 31.3vw">
+        <div id="Logo" style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; height: 15vh; width: 31.3vw; background: black; border-bottom: 1vh solid black;">
+            <img src="{% static 'xlr8_white.png' %}" alt="xlr8" style="width:18.17vh;height:13vh;">
+        </div>
+        <div id="Tools" style="display: flex; flex-direction: column; height: 83vh; width: 31.3vw; background:;">
+            <div class="row" style="display: flex; height: 83vh; overflow-y: scroll;">
+                <form class="col s12">
+                    <div id = "form-fields">
+                        {% csrf_token %}
+                      <div class="row" id = "field1">
+                        <div class="input-field col s4">
+                            <input placeholder="Source" id="src1" type="number" class="validate">
+                        </div>
+                        <div class="input-field col s4">
+                            <input placeholder="Destination" id="dest1" type="number" class="validate">
+                        </div>
+                        <div class="input-field col s2">
+                            <label>
+                                <input type="checkbox" class = "check" id="spec1" value=1 /><span></span>
+                            </label>
+                        </div>
                       </div>
                   </div>
+                </form>
             </div>
-          </div>
+           
+             <div class="row" style="display: flex; width: 31.3vw; align-items: center; justify-content: space-between; background: white; margin-bottom: 4vh; ">
+                <a class="add-more btn-floating btn-small black white-text" style="margin-left: 11.416vh;"><i class="material-icons white-text">add</i></a>
+                <button id="subform" class="btn waves-effect waves-light black white-text"  type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
   </div>
-</div>
 
-{#<div class="container">#}
-{#	<div class="row">#}
-{#		<input type="hidden" name="count" value="1" />#}
-{#        <div class="control-group" id="fields">#}
-{#            <label class="control-label" for="field1">Enter data</label>#}
-{#            <div class="controls" id="profs">#}
-{#                <form class="input-append">#}
-{#                    <div id="field"><input autocomplete="off" class="input" id="field1" name="prof1" type="text" placeholder="Type something" data-items="8"/><button id="b1" class="btn add-more" type="button">+</button></div>#}
-{#                </form>#}
-{#            <br>#}
-{#            <small>Press + to add another form field :)</small>#}
-{#            </div>#}
-{#        </div>#}
-{#	</div>#}
-{#</div>#}
 
-{#<div id="mapid"></div>#}
-
-{#<div class="example-container">#}
-{#<div class="row">#}
-{#  <section class="col col-2 header">Location</section>#}
-{#  <section class="col col-10">#}
-{#    <div class="row">#}
-{#      <section class="col col-6">#}
-{#        <div id="MapLocation"></div>#}
-{#      </section>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#      <section class="col col-3">#}
-{#        <label class="input">#}
-{#          <input id="Latitude" placeholder="Latitude" name="Location.Latitude" />#}
-{#          <!-- @Html.TextBoxFor(m => m.Location.Latitude, new {id = "Latitude", placeholder = "Latitude"}) -->#}
-{#        </label>#}
-{#      </section>#}
-{#      <section class="col col-3">#}
-{#        <label class="input">#}
-{#          <input id="Longitude" placeholder="Longitude" name="Location.Longitude" />#}
-{#          <!-- @Html.TextBoxFor(m => m.Location.Longitude, new {id = "Longitude", placeholder = "Longitude"}) -->#}
-{#        </label>#}
-{#      </section>#}
-{#    </div>#}
-{#  </section>#}
-{#</div>#}
-{#</div>#}
+        </div>
+    </div>
 
 </body>
 </html>
-

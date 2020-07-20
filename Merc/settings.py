@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['172.17.72.242','127.0.0.1','localhost']
 
 INSTALLED_APPS = [
     'main',
+    'ajax_loading_overlay',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
